@@ -6,20 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="24ab1d1d-38da-47c0-acfc-5a3d0af51792" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ChatController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ChatControllerAdmin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MessageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MessageControllerAdmin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/ChatResource.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/MessageResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/MessageResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/UserResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Chat.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportControllerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportControllerAdmin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TaskControllerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TaskControllerAdmin.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Manager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Manager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Message.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Message.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_12_17_154943_create_chats_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_12_17_154947_create_messages_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_12_17_154947_create_messages_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/BaseController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Delete.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Delete.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Destroy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Destroy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Properties.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Properties.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Restore.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Restore.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Show.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Show.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Store.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Store.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -697,7 +695,7 @@
       <workItem from="1765635284329" duration="3452000" />
       <workItem from="1765975469897" duration="14464000" />
       <workItem from="1765990698048" duration="148000" />
-      <workItem from="1766234252266" duration="6152000" />
+      <workItem from="1766234252266" duration="9343000" />
     </task>
     <servers />
   </component>

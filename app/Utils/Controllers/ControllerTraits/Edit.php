@@ -29,6 +29,14 @@ trait Edit
             }
         }
         $custom_kw = array_search("edit", array_keys($this->custom_kws));
+        if ($this->access_checks) {
+            foreach ($this->access_checks as $name => $check) {
+                $result = $check($request, $validated, 'edit:' . $kw . ":" . $custom_kw);
+                if (!$result) {
+                    throw new AccessDeniedException();
+                }
+            }
+        }
         $query = $this->selection_query != null && !in_array('edit', $this->selection_query_blacklist) ? ($this->selection_query)($request) : $this->model::query();
         foreach ($this->selection_query_replace as $key => $value) {
             if ($key == 'edit') {

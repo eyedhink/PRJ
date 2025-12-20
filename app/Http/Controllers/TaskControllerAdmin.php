@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TaskResource;
-use App\Models\Manager;
+use App\Models\Role;
 use App\Models\Task;
+use App\Models\User;
 use App\Utils\Controllers\BaseController;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class TaskControllerAdmin extends BaseController
@@ -39,19 +40,65 @@ class TaskControllerAdmin extends BaseController
             ],
             validation_extensions: [
                 'store' => [
-                    'manager_id' => fn(Request $request, array $validated) => $request->user('manager')->id,
+                    'manager_id' => fn(Request $request, array $validated) => $request->user('user')->id,
                     'order' => function (Request $request, array $validated) {
-                        $tasked = Manager::query()->findOrFail($validated['manager_id']);
+                        $tasked = User::query()->findOrFail($validated['manager_id']);
+                        $role = $tasked->role;
                         $order = 0;
-                        while (isset($tasked->manager_id)) {
+                        while (isset($role->master_id)) {
                             $order++;
-                            $tasked = Manager::query()->findOrFail($tasked->manager_id);
+                            $role = Role::query()->findOrFail($role->master_id);
                         }
                         return $order;
                     }
                 ]
             ],
-            selection_query: fn(Request $request): Builder => Task::with(['tasked', 'tasker'])->where('manager_id', $request->user('manager')->id)->orderByDesc('order'),
+            selection_query_replace: [
+                "index" => fn(Request $request, array $validated) => Task::query()->cursor()->filter(function (Task $task) use ($request) {
+                    return $this->isHigherRanked($task->tasked->role, $request->user('user')->role);
+                })->values(),
+            ],
+            access_checks: [
+                'is_higher_ranked' => function (Request $request, array $validated, string $method) {
+                    $user = isset($validated['user_id']) ? User::query()->findOrFail($validated['user_id']) : null;
+                    $manager = $request->user('user');
+                    if ($method == "store") {
+                        $user_role = $user->role;
+                        $manager_role = $manager->role;
+                        return $this->isHigherRanked($user_role, $manager_role);
+                    } else if (starts_with($method, "edit") || starts_with($method, "show")
+                        || starts_with($method, "destroy") || starts_with($method, "restore") || starts_with($method, "delete")) {
+                        $exploded = explode(":", $method);
+                        $kw = $exploded[1];
+                        $custom_kw = $exploded[2];
+                        $task = Task::query()->firstWhere($custom_kw ?? "id", $kw);
+                        $user_role = $task->tasked->role;
+                        $manager_role = $manager->role;
+                        return $this->isHigherRanked($user_role, $manager_role);
+                    } else if ($method == "index") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+            ]
         );
+    }
+
+    /**
+     * @template TModel of Model
+     * @param class-string<TModel> $userRole
+     * @param class-string<TModel> $ManagerRole
+     * @return bool
+     */
+    public function isHigherRanked(string $userRole, string $ManagerRole): bool
+    {
+        while (isset($userRole->master_id)) {
+            $role = Role::query()->findOrFail($userRole->master_id);
+            if ($role->title == $ManagerRole->title) {
+                return true;
+            }
+        }
+        return false;
     }
 }

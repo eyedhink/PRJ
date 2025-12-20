@@ -24,15 +24,16 @@ use Illuminate\Http\Request;
      * @param array $ability_system_blacklist
      * @param array $validation
      * @param array $validation_create
+     * @param array $validation_index
      * @param array $validation_update
-     * @param array $custom_kws
      * @param array $validation_extensions
+     * @param array $custom_kws
      * @param (callable(Request $request): Builder)|null $selection_query
      * @param (callable(Request $request): Builder)|null $selection_query_with_trashed
-     * @param array $match_ids
-     * @param array $validation_index
      * @param array $selection_query_blacklist
      * @param array $selection_query_replace
+     * @param array $match_ids
+     * @param array $access_checks
      * @template TResource of BaseResource
      */
     public function __construct
@@ -55,6 +56,7 @@ use Illuminate\Http\Request;
         array         $selection_query_blacklist = [],
         array         $selection_query_replace = [],
         array         $match_ids = [],
+        array         $access_checks = [],
     )
     {
         $this->model = $model;
@@ -89,5 +91,6 @@ use Illuminate\Http\Request;
         $this->selection_query_blacklist = $selection_query_blacklist;
         $this->selection_query_replace = $selection_query_replace;
         $this->match_ids = $match_ids;
+        $this->access_checks = $access_checks;
     }
 }

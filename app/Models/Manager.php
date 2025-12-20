@@ -25,9 +25,4 @@ class Manager extends Model
     protected $hidden = [
         'password'
     ];
-
-    public function tasks(): HasMany
-    {
-        return $this->hasMany(Task::class);
-    }
 }

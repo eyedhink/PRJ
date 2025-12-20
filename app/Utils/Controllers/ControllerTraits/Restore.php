@@ -24,6 +24,14 @@ trait Restore
             throw new ImpossibleRequestException();
         }
         $custom_kw = array_search("restore", array_keys($this->custom_kws));
+        if ($this->access_checks) {
+            foreach ($this->access_checks as $name => $check) {
+                $result = $check($request, [], 'restore:' . $kw . ":" . $custom_kw);
+                if (!$result) {
+                    throw new AccessDeniedException();
+                }
+            }
+        }
         $query = $this->selection_query_with_trashed != null && !in_array('restore', $this->selection_query_blacklist) ? ($this->selection_query_with_trashed)($request) : $this->model::withTrashed();
         foreach ($this->selection_query_replace as $key => $value) {
             if ($key == 'restore') {

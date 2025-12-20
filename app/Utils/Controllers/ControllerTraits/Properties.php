@@ -20,4 +20,5 @@ trait Properties
     private array $selection_query_blacklist;
     private array $selection_query_replace;
     private array $match_ids;
+    private array $access_checks;
 }

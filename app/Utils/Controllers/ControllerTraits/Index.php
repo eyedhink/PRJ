@@ -30,6 +30,14 @@ trait Index
                 }
             }
         }
+        if ($this->access_checks) {
+            foreach ($this->access_checks as $name => $check) {
+                $result = $check($request, $validated, 'index');
+                if (!$result) {
+                    throw new AccessDeniedException();
+                }
+            }
+        }
         foreach ($this->match_ids as $key => $value) {
             if ($key == 'index') {
                 if (!$this->matchIds($validated, $value)) {
