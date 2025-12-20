@@ -43,13 +43,13 @@ class User extends Model
         return $this->hasMany(Report::class);
     }
 
-    public function messages(): HasMany
+    public function sent_messages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function chats(): HasMany
+    public function received_messages(): HasMany
     {
-        return $this->hasMany(Chat::class);
+        return $this->hasMany(Message::class, 'receiver_id');
     }
 }

@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ChatControllerAdmin;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MessageController;
-use App\Http\Controllers\MessageControllerAdmin;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportControllerAdmin;
 use App\Http\Controllers\RoleController;
@@ -50,25 +47,11 @@ Route::middleware('auth:user')->group(function () {
         ->middleware(AuthorizeAbility::class . ':task-update');
     Route::delete("/delete-task/{kw}", [TaskController::class, "destroy"])
         ->middleware(AuthorizeAbility::class . ':task-delete');
-
-    Route::post("/chat-create", [ChatController::class, "store"])
-        ->middleware(AuthorizeAbility::class . ':chat-create');
-    Route::get("/chats", [ChatController::class, "index"])
-        ->middleware(AuthorizeAbility::class . ':chat-index');
-    Route::get("/chat/{kw}", [ChatController::class, "show"])
-        ->middleware(AuthorizeAbility::class . ':chat-show');
-    Route::delete("/delete-chat/{kw}", [ChatController::class, "destroy"])
-        ->middleware(AuthorizeAbility::class . ':chat-delete');
 });
 
 Route::middleware("auth:manager")->group(function () {
     Route::post("/user-apply-role/{id}", [UserController::class, "apply_role"]);
-
-    Route::post("/message-create-admin", [MessageControllerAdmin::class, "store"]);
-    Route::get("/messages-admin", [MessageControllerAdmin::class, "index"]);
-    Route::get("/message-admin/{kw}", [MessageControllerAdmin::class, "show"]);
-    Route::put("/edit-message-admin/{kw}", [MessageControllerAdmin::class, "edit"]);
-    Route::delete("/delete-message-admin/{kw}", [MessageControllerAdmin::class, "destroy"]);
+    Route::post("/user-create", [UserController::class, "store"]);
 
     Route::get("/reports-admin", [ReportControllerAdmin::class, "index"]);
     Route::get("/report-admin/{kw}", [ReportControllerAdmin::class, "show"]);
@@ -84,9 +67,4 @@ Route::middleware("auth:manager")->group(function () {
     Route::get("/role/{kw}", [RoleController::class, "show"]);
     Route::put("/edit-role/{kw}", [RoleController::class, "edit"]);
     Route::delete("/delete-role/{kw}", [RoleController::class, "destroy"]);
-
-    Route::post("/chat-create-admin", [ChatControllerAdmin::class, "store"]);
-    Route::get("/chats-admin", [ChatControllerAdmin::class, "index"]);
-    Route::get("/chat-admin/{kw}", [ChatControllerAdmin::class, "show"]);
-    Route::delete("/delete-chat-admin/{kw}", [ChatControllerAdmin::class, "destroy"]);
 });

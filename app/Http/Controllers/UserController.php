@@ -45,4 +45,15 @@ class UserController
         $user->save();
         return response()->json(["message" => "Role Applied Successfully"]);
     }
+
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            "name" => ['required', 'string', 'unique:users'],
+            "password" => ['required', 'string'],
+            "role_id" => ['required', 'integer', 'exists:roles,id'],
+        ]);
+        User::query()->create($validated);
+        return response()->json(["message" => "User Created Successfully"]);
+    }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
-use App\Models\Chat;
 use App\Models\Message;
 use App\Utils\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,37 +15,25 @@ class MessageController extends BaseController
         parent::__construct(
             model: Message::class,
             resource: MessageResource::class,
-            loadRelations: ['user', 'chat', 'manager'],
+            loadRelations: ['sender', 'receiver'],
             validation: [
                 'content' => ['required', 'string'],
-                'chat_id' => ['required', 'integer', 'exists:chats,id'],
-            ],
-            validation_index: [
-                'chat_id' => ['required', 'integer', 'exists:chats,id'],
+                'receiver_id' => ['required', 'integer', 'exists:users,id'],
             ],
             validation_update: [
                 'content' => ['required', 'string'],
             ],
             validation_extensions: [
                 'store' => [
-                    'user_id' => fn(Request $request, array $validated) => $request->user('user')->id,
+                    'sender_id' => fn(Request $request, array $validated) => $request->user('user')->id,
                 ],
                 'index' => [
-                    'user_id' => fn(Request $request, array $validated) => $request->user('user')->id,
+                    'sender_id' => fn(Request $request, array $validated) => $request->user('user')->id,
                 ]
             ],
-            selection_query: fn(Request $request): Builder => Message::with(['user', 'chat'])->where('user_id', $request->user('user')->id),
-            selection_query_blacklist: [
-                'index'
-            ],
-            selection_query_replace: [
-                'index' => fn(Request $request, array $validated): Builder => Message::with(['user', 'chat'])
-                    ->where('chat_id', $validated['chat_id']),
-            ],
-            match_ids: [
-                'store' => ['user_id', 'chat_id', Chat::class],
-                'index' => ['user_id', 'chat_id', Chat::class],
-            ]
+            selection_query: fn(Request $request): Builder => Message::with(['sender', 'receiver'])
+                ->where('sender_id', $request->user('user')->id)
+                ->orWhere('receiver_id', $request->user('user')->id),
         );
     }
 }

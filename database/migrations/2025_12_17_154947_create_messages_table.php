@@ -13,9 +13,8 @@ return new class extends Migration {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('content');
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->foreignId('manager_id')->nullable()->constrained('managers')->cascadeOnDelete();
-            $table->foreignId('chat_id')->constrained('chats')->cascadeOnDelete();
+            $table->foreignId('sender_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('receiver_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

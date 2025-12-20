@@ -9,23 +9,17 @@ class Message extends Model
 {
     protected $fillable = [
         'content',
-        'user_id',
-        'manager_id',
-        'chat_id'
+        'sender_id',
+        'receiver_id',
     ];
 
-    public function user(): BelongsTo
+    public function sender(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function manager(): BelongsTo
+    public function receiver(): BelongsTo
     {
-        return $this->belongsTo(Manager::class);
-    }
-
-    public function chat(): BelongsTo
-    {
-        return $this->belongsTo(Chat::class);
+        return $this->belongsTo(User::class, 'receiver_id');
     }
 }

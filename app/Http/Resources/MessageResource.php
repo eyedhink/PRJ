@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use App\Utils\Resources\BaseResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class MessageResource extends BaseResource
 {
@@ -17,9 +16,8 @@ class MessageResource extends BaseResource
     {
         $attributes = parent::toArray($request);
         $customFields = [
-            'user' => UserResource::make($this->whenLoaded('user')),
-            'manager' => ManagerResource::make($this->whenLoaded('manager')),
-            'chat' => ChatResource::make($this->whenLoaded('chat')),
+            'sender' => UserResource::make($this->whenLoaded('sender')),
+            'receiver' => UserResource::make($this->whenLoaded('receiver')),
         ];
         return array_merge($attributes, $customFields);
     }
