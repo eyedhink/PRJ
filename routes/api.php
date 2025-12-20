@@ -57,14 +57,12 @@ Route::middleware('auth:user')->group(function () {
         ->middleware(AuthorizeAbility::class . ':chat-index');
     Route::get("/chat/{kw}", [ChatController::class, "show"])
         ->middleware(AuthorizeAbility::class . ':chat-show');
-    Route::put("/edit-chat/{kw}", [ChatController::class, "edit"])
-        ->middleware(AuthorizeAbility::class . ':chat-update');
     Route::delete("/delete-chat/{kw}", [ChatController::class, "destroy"])
         ->middleware(AuthorizeAbility::class . ':chat-delete');
 });
 
 Route::middleware("auth:manager")->group(function () {
-    Route::post("/user-apply-role", [UserController::class, "apply_role"]);
+    Route::post("/user-apply-role/{id}", [UserController::class, "apply_role"]);
 
     Route::post("/message-create-admin", [MessageControllerAdmin::class, "store"]);
     Route::get("/messages-admin", [MessageControllerAdmin::class, "index"]);
@@ -90,6 +88,5 @@ Route::middleware("auth:manager")->group(function () {
     Route::post("/chat-create-admin", [ChatControllerAdmin::class, "store"]);
     Route::get("/chats-admin", [ChatControllerAdmin::class, "index"]);
     Route::get("/chat-admin/{kw}", [ChatControllerAdmin::class, "show"]);
-    Route::put("/edit-chat-admin/{kw}", [ChatControllerAdmin::class, "edit"]);
     Route::delete("/delete-chat-admin/{kw}", [ChatControllerAdmin::class, "destroy"]);
 });

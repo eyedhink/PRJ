@@ -24,7 +24,7 @@ class ReportController extends BaseController
                     'user_id' => fn(Request $request, array $validated) => $request->user('user')->id,
                 ]
             ],
-            selection_query: fn(Request $request): Builder => Report::with(['user'])->where('user_id', $request->user('user')->id)->where('status', "!=", 'failed'),
+            selection_query: fn(Request $request): Builder => Report::with(['user'])->where('user_id', $request->user('user')->id),
         );
     }
 }

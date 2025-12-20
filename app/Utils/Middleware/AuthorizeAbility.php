@@ -19,7 +19,7 @@ class AuthorizeAbility
     public function handle(Request $request, Closure $next, string $ability): Response
     {
 
-        if (!FunctionUtils::isAuthorized($request->user('admin'), $ability)) {
+        if (!FunctionUtils::isAuthorized($request->user('user'), $ability)) {
             throw new AccessDeniedException();
         }
 

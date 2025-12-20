@@ -17,7 +17,8 @@ class AuthorizeAbility
      */
     public function handle(Request $request, Closure $next, string $ability): Response
     {
-        if (!in_array($ability, $request->user('user')->role()->abilities)) {
+        $abilities = $request->user('user')->role->abilities;
+        if (!in_array($ability, $abilities) && !in_array("*", $abilities)) {
             throw new AccessDeniedException();
         }
 

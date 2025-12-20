@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
+use App\Models\Chat;
 use App\Models\Message;
 use App\Utils\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,12 +37,15 @@ class MessageControllerAdmin extends BaseController
             ],
             selection_query: fn(Request $request): Builder => Message::with(['manager', 'chat'])->where('manager_id', $request->user('manager')->id),
             selection_query_blacklist: [
-                'index',
-                'show'
+                'index'
             ],
             selection_query_replace: [
                 'index' => fn(Request $request, array $validated): Builder => Message::with(['manager', 'chat'])
                     ->where('chat_id', $validated['chat_id']),
+            ],
+            match_ids: [
+                'store' => ['manager_id', 'chat_id', Chat::class],
+                'index' => ['manager_id', 'chat_id', Chat::class],
             ]
         );
     }

@@ -35,12 +35,12 @@ class UserController
         ]);
     }
 
-    public function apply_role(Request $request): JsonResponse
+    public function apply_role(Request $request, string $id): JsonResponse
     {
         $validated = $request->validate([
             'role_id' => ['required', 'integer', 'exists:roles,id'],
         ]);
-        $user = $request->user('user');
+        $user = User::query()->findOrFail($id);
         $user->role_id = $validated['role_id'];
         $user->save();
         return response()->json(["message" => "Role Applied Successfully"]);

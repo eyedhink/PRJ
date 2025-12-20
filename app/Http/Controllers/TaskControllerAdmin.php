@@ -6,7 +6,6 @@ use App\Http\Resources\TaskResource;
 use App\Models\Manager;
 use App\Models\Task;
 use App\Utils\Controllers\BaseController;
-use App\Utils\Exceptions\ImpossibleRequestException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -40,6 +39,7 @@ class TaskControllerAdmin extends BaseController
             ],
             validation_extensions: [
                 'store' => [
+                    'manager_id' => fn(Request $request, array $validated) => $request->user('manager')->id,
                     'order' => function (Request $request, array $validated) {
                         $tasked = Manager::query()->findOrFail($validated['manager_id']);
                         $order = 0;
@@ -51,7 +51,7 @@ class TaskControllerAdmin extends BaseController
                     }
                 ]
             ],
-            selection_query: fn(Request $request): Builder => Task::with(['tasked', 'tasker'])->orderByDesc('order'),
+            selection_query: fn(Request $request): Builder => Task::with(['tasked', 'tasker'])->where('manager_id', $request->user('manager')->id)->orderByDesc('order'),
         );
     }
 }

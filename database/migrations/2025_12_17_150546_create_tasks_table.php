@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('order');
+            $table->integer('order')->default(0);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('manager_id')->nullable()->constrained('managers')->cascadeOnDelete();
             $table->json('requirements')->nullable();

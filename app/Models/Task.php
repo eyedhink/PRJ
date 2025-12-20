@@ -25,11 +25,11 @@ class Task extends Model
 
     public function tasked(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function tasker(): BelongsTo
     {
-        return $this->belongsTo(Manager::class);
+        return $this->belongsTo(Manager::class, 'manager_id');
     }
 }

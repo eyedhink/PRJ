@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
+use App\Models\Chat;
 use App\Models\Message;
-use App\Models\Ticket;
 use App\Utils\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -44,8 +44,8 @@ class MessageController extends BaseController
                     ->where('chat_id', $validated['chat_id']),
             ],
             match_ids: [
-                'store' => ['user_id', 'chat_id', Ticket::class],
-                'index' => ['user_id', 'chat_id', Ticket::class],
+                'store' => ['user_id', 'chat_id', Chat::class],
+                'index' => ['user_id', 'chat_id', Chat::class],
             ]
         );
     }

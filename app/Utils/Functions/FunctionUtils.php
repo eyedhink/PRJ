@@ -2,7 +2,6 @@
 
 namespace App\Utils\Functions;
 
-use App\Models\Admin;
 use App\Utils\Resources\BaseResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -96,8 +95,14 @@ class FunctionUtils
         return response()->json(["data" => $resource::collection($models), "pagination_info" => $pagination_info]);
     }
 
-    public static function isAuthorized(Admin $admin, string $ability): bool
+    /**
+     * @template TModel of Model
+     * @param class-string<TModel> $admin
+     * @param string $ability
+     * @return bool
+     */
+    public static function isAuthorized(string $admin, string $ability): bool
     {
-        return $admin->is_main_admin || in_array($ability, $admin->abilities);
+        return ($admin->is_main_admin ?? false) || (isset($admin->abilities) && in_array($ability, $admin->abilities));
     }
 }
