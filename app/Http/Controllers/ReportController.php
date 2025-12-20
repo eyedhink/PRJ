@@ -27,19 +27,19 @@ class ReportController extends BaseController
                 ]
             ],
             selection_query: fn(Request $request): Builder => Report::with(['user'])->where('user_id', $request->user('user')->id),
-//            access_checks: [
-//                'is_too_late' => function (Request $request, array $validated, string $method) {
-//                    if (str_starts_with($method, "edit")) {
-//                        $report = Report::query()->findOrFail($request->query('kw'));
-//                        var_dump($request->query('kw'));
-//                        if (time() - Carbon::parse($report->created_at)->timestamp > 86400) {
-//                            throw new TooLate();
-//                        }
-//                        return true;
-//                    }
-//                    return true;
-//                }
-//            ]
+            access_checks: [
+                'is_too_late' => function (Request $request, array $validated, string $method) {
+                    if (str_starts_with($method, "edit")) {
+                        $exploded = explode(":", $method);
+                        $report = Report::query()->findOrFail($exploded[1]);
+                        if (time() - Carbon::parse($report->created_at)->timestamp > 86400) {
+                            throw new TooLate();
+                        }
+                        return true;
+                    }
+                    return true;
+                }
+            ]
         );
     }
 }
