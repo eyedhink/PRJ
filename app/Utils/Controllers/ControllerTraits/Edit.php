@@ -31,7 +31,7 @@ trait Edit
         $custom_kw = array_search("edit", array_keys($this->custom_kws));
         if ($this->access_checks) {
             foreach ($this->access_checks as $name => $check) {
-                $result = $check($request, $validated, 'edit:' . $kw . ":" . $custom_kw);
+                $result = $check($request, $validated, 'edit:' . $kw . ":" . "id");
                 if (!$result) {
                     throw new AccessDeniedException();
                 }

@@ -21,7 +21,7 @@ trait Delete
         $custom_kw = array_search("delete", array_keys($this->custom_kws));
         if ($this->access_checks) {
             foreach ($this->access_checks as $name => $check) {
-                $result = $check($request, [], 'delete:' . $kw . ":" . $custom_kw);
+                $result = $check($request, [], 'delete:' . $kw . ":" . "id");
                 if (!$result) {
                     throw new AccessDeniedException();
                 }

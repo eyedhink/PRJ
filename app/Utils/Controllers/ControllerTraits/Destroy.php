@@ -21,7 +21,7 @@ trait Destroy
         $custom_kw = array_search("destroy", array_keys($this->custom_kws));
         if ($this->access_checks) {
             foreach ($this->access_checks as $name => $check) {
-                $result = $check($request, [], 'destroy:' . $kw . ":" . $custom_kw);
+                $result = $check($request, [], 'destroy:' . $kw . ":" . "id");
                 if (!$result) {
                     throw new AccessDeniedException();
                 }

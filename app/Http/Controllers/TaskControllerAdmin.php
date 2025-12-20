@@ -72,7 +72,7 @@ class TaskControllerAdmin extends BaseController
                         $exploded = explode(":", $method);
                         $kw = $exploded[1];
                         $custom_kw = $exploded[2];
-                        $task = Task::query()->firstWhere($custom_kw ?? "id", $kw);
+                        $task = Task::query()->firstWhere($custom_kw, $kw);
                         $user_role = $task->tasked->role;
                         $manager_role = $manager->role;
                         return $this->isHigherRanked($user_role, $manager_role);
@@ -100,8 +100,8 @@ class TaskControllerAdmin extends BaseController
     // Only (2) is Ranked Higher than (3)
     public function isHigherRanked(string $userRole, string $ManagerRole): bool
     {
-        $user_path = explode("->", $userRole->branch);
-        $manager_path = explode("->", $ManagerRole->branch);
+        $user_path = explode("->", json_decode($userRole)->branch);
+        $manager_path = explode("->", json_decode($ManagerRole)->branch);
         if (count($user_path) == count($manager_path)) {
             return false;
         }
@@ -113,7 +113,7 @@ class TaskControllerAdmin extends BaseController
                 return false;
             }
         }
-        if ($userRole->depth < $ManagerRole->depth) {
+        if (json_decode($userRole)->depth > json_decode($ManagerRole)->depth) {
             return true;
         }
         return false;

@@ -26,7 +26,7 @@ trait Restore
         $custom_kw = array_search("restore", array_keys($this->custom_kws));
         if ($this->access_checks) {
             foreach ($this->access_checks as $name => $check) {
-                $result = $check($request, [], 'restore:' . $kw . ":" . $custom_kw);
+                $result = $check($request, [], 'restore:' . $kw . ":" . "id");
                 if (!$result) {
                     throw new AccessDeniedException();
                 }

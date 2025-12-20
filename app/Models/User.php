@@ -58,7 +58,7 @@ class User extends Model
         return $query->whereHas('role', function ($query) use ($managerRole) {
             $query->whereRaw('? LIKE CONCAT(roles.branch, \'->%\')', [$managerRole->branch])
                 ->whereRaw('LENGTH(roles.branch) < LENGTH(?)', [$managerRole->branch])
-                ->where('roles.depth', '<', $managerRole->depth);
+                ->where('roles.depth', '>', $managerRole->depth);
         });
     }
 }

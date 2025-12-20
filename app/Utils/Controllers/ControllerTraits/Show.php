@@ -21,7 +21,7 @@ trait Show
         $custom_kw = array_search("show", array_keys($this->custom_kws));
         if ($this->access_checks) {
             foreach ($this->access_checks as $name => $check) {
-                $result = $check($request, [], 'show:' . $kw . ":" . $custom_kw);
+                $result = $check($request, [], 'show:' . $kw . ":" . "id");
                 if (!$result) {
                     throw new AccessDeniedException();
                 }

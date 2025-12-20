@@ -7,6 +7,7 @@ use App\Models\Report;
 use App\Utils\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use function Pest\Laravel\json;
 
 class ReportControllerAdmin extends BaseController
 {
@@ -31,7 +32,7 @@ class ReportControllerAdmin extends BaseController
                         $exploded = explode(":", $method);
                         $kw = $exploded[1];
                         $custom_kw = $exploded[2];
-                        $report = Report::query()->firstWhere($custom_kw ?? "id", $kw);
+                        $report = Report::query()->firstWhere($custom_kw, $kw);
                         $user_role = $report->user->role;
                         $manager_role = $manager->role;
                         return $this->isHigherRanked($user_role, $manager_role);
@@ -59,8 +60,8 @@ class ReportControllerAdmin extends BaseController
     // Only (2) is Ranked Higher than (3)
     public function isHigherRanked(string $userRole, string $ManagerRole): bool
     {
-        $user_path = explode("->", $userRole->branch);
-        $manager_path = explode("->", $ManagerRole->branch);
+        $user_path = explode("->", json_decode($userRole)->branch);
+        $manager_path = explode("->", json_decode($ManagerRole)->branch);
         if (count($user_path) == count($manager_path)) {
             return false;
         }
@@ -72,7 +73,7 @@ class ReportControllerAdmin extends BaseController
                 return false;
             }
         }
-        if ($userRole->depth < $ManagerRole->depth) {
+        if (json_decode($userRole)->depth > json_decode($ManagerRole)->depth) {
             return true;
         }
         return false;
