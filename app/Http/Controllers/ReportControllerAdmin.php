@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ReportResource;
 use App\Models\Report;
-use App\Models\Role;
-use App\Models\Task;
-use App\Models\User;
 use App\Utils\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -23,14 +20,14 @@ class ReportControllerAdmin extends BaseController
                 'content' => ['required', 'string'],
             ],
             selection_query_replace: [
-                "index" => fn(Request $request, array $validated) => Report::query()->cursor()->filter(function (Report $report) use ($request) {
-                    return $this->isHigherRanked($report->user->role, $request->user('user')->role);
-                })->values(),
+                "index" => fn(Request $request, array $validated) => Report::query()->whereHas('user', function ($query) use ($request) {
+                    $query->higherRankedThan($request->user('user')->role);
+                }),
             ],
             access_checks: [
                 'is_higher_ranked' => function (Request $request, array $validated, string $method) {
                     $manager = $request->user('user');
-                    if (starts_with($method, "show")) {
+                    if (str_starts_with($method, "show")) {
                         $exploded = explode(":", $method);
                         $kw = $exploded[1];
                         $custom_kw = $exploded[2];
@@ -54,13 +51,29 @@ class ReportControllerAdmin extends BaseController
      * @param class-string<TModel> $ManagerRole
      * @return bool
      */
+    // 1: Financial Manager->A
+    // 2: Financial Manager->B
+    // 3: Financial Manager->B->C
+    // 4: Financial Manager->A->F
+    // 5: Marketer->D->E
+    // Only (2) is Ranked Higher than (3)
     public function isHigherRanked(string $userRole, string $ManagerRole): bool
     {
-        while (isset($userRole->master_id)) {
-            $role = Role::query()->findOrFail($userRole->master_id);
-            if ($role->title == $ManagerRole->title) {
-                return true;
+        $user_path = explode("->", $userRole->branch);
+        $manager_path = explode("->", $ManagerRole->branch);
+        if (count($user_path) == count($manager_path)) {
+            return false;
+        }
+        for ($i = 0; $i < (max(count($user_path), count($manager_path))); $i++) {
+            if (isset($user_path[$i]) && !isset($manager_path[$i])) {
+                break;
             }
+            if ($user_path[$i] != $manager_path[$i]) {
+                return false;
+            }
+        }
+        if ($userRole->depth < $ManagerRole->depth) {
+            return true;
         }
         return false;
     }

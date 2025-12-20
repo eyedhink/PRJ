@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\RoleController;
 use App\Models\Manager;
 use App\Models\Role;
 use App\Models\User;
@@ -24,11 +25,14 @@ class DatabaseSeeder extends Seeder
         Role::query()->create([
             'title' => 'admin',
             'abilities' => ["*"],
+            'branch' => 'admin',
         ]);
         Role::query()->create([
             'title' => "Base",
             'abilities' => ['task-index', 'task-create'],
             'master_id' => 1,
+            'branch' => 'admin->Base',
+            'depth' => 1
         ]);
         User::query()->create([
             'name' => 'admin',

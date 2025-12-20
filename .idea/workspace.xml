@@ -7,18 +7,12 @@
     <list default="true" id="24ab1d1d-38da-47c0-acfc-5a3d0af51792" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportControllerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportControllerAdmin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/RoleController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/RoleController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TaskControllerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TaskControllerAdmin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Manager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Manager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/BaseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Delete.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Delete.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Destroy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Destroy.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Edit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Properties.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Properties.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Restore.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Restore.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Show.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Show.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Store.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Store.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Role.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Role.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2025_12_17_150544_create_roles_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_12_17_150544_create_roles_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +41,12 @@
     &quot;assignee&quot;: &quot;eyedhink&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/eyedhink/PRJ.git",
-    "accountId": "0d4c381d-8d7a-4d62-832b-c2904d4b8ce5"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/eyedhink/PRJ.git&quot;,
+    &quot;accountId&quot;: &quot;0d4c381d-8d7a-4d62-832b-c2904d4b8ce5&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../MiniProject/vendor/laravel/framework/src/Illuminate/Auth/AuthenticationException.php" root0="FORCE_HIGHLIGHTING" root1="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/../MiniProject/vendor/laravel/framework/src/Illuminate/Auth/GuardHelpers.php" root0="FORCE_HIGHLIGHTING" root1="SKIP_INSPECTION" />
@@ -647,11 +641,17 @@
       <option name="pestRunnerSettings">
         <PestRunner configuration_file="$PROJECT_DIR$/../Miniproject4/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
       </option>
+      <option name="runnerSettings">
+        <PhpTestRunnerSettings configuration_file="$PROJECT_DIR$/../Miniproject4/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
+      </option>
       <method v="2" />
     </configuration>
     <configuration name="Main" type="PestRunConfigurationType">
       <option name="pestRunnerSettings">
         <PestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
+      </option>
+      <option name="runnerSettings">
+        <PhpTestRunnerSettings configuration_file="$PROJECT_DIR$/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
       </option>
       <method v="2" />
     </configuration>
@@ -695,7 +695,8 @@
       <workItem from="1765635284329" duration="3452000" />
       <workItem from="1765975469897" duration="14464000" />
       <workItem from="1765990698048" duration="148000" />
-      <workItem from="1766234252266" duration="9343000" />
+      <workItem from="1766234252266" duration="9898000" />
+      <workItem from="1766244386640" duration="2798000" />
     </task>
     <servers />
   </component>

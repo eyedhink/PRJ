@@ -52,4 +52,13 @@ class User extends Model
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }
+
+    public function scopeHigherRankedThan($query, Role $managerRole)
+    {
+        return $query->whereHas('role', function ($query) use ($managerRole) {
+            $query->whereRaw('? LIKE CONCAT(roles.branch, \'->%\')', [$managerRole->branch])
+                ->whereRaw('LENGTH(roles.branch) < LENGTH(?)', [$managerRole->branch])
+                ->where('roles.depth', '<', $managerRole->depth);
+        });
+    }
 }

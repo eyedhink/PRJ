@@ -54,9 +54,10 @@ class TaskControllerAdmin extends BaseController
                 ]
             ],
             selection_query_replace: [
-                "index" => fn(Request $request, array $validated) => Task::query()->cursor()->filter(function (Task $task) use ($request) {
-                    return $this->isHigherRanked($task->tasked->role, $request->user('user')->role);
-                })->values(),
+                "index" => fn(Request $request, array $validated) => Task::query()
+                    ->whereHas('tasked', function ($query) use ($request) {
+                        $query->higherRankedThan($request->user('user')->role);
+                    })
             ],
             access_checks: [
                 'is_higher_ranked' => function (Request $request, array $validated, string $method) {
@@ -66,8 +67,8 @@ class TaskControllerAdmin extends BaseController
                         $user_role = $user->role;
                         $manager_role = $manager->role;
                         return $this->isHigherRanked($user_role, $manager_role);
-                    } else if (starts_with($method, "edit") || starts_with($method, "show")
-                        || starts_with($method, "destroy") || starts_with($method, "restore") || starts_with($method, "delete")) {
+                    } else if (str_starts_with($method, "edit") || str_starts_with($method, "show")
+                        || str_starts_with($method, "destroy") || str_starts_with($method, "restore") || str_starts_with($method, "delete")) {
                         $exploded = explode(":", $method);
                         $kw = $exploded[1];
                         $custom_kw = $exploded[2];
@@ -91,13 +92,29 @@ class TaskControllerAdmin extends BaseController
      * @param class-string<TModel> $ManagerRole
      * @return bool
      */
+    // 1: Financial Manager->A
+    // 2: Financial Manager->B
+    // 3: Financial Manager->B->C
+    // 4: Financial Manager->A->F
+    // 5: Marketer->D->E
+    // Only (2) is Ranked Higher than (3)
     public function isHigherRanked(string $userRole, string $ManagerRole): bool
     {
-        while (isset($userRole->master_id)) {
-            $role = Role::query()->findOrFail($userRole->master_id);
-            if ($role->title == $ManagerRole->title) {
-                return true;
+        $user_path = explode("->", $userRole->branch);
+        $manager_path = explode("->", $ManagerRole->branch);
+        if (count($user_path) == count($manager_path)) {
+            return false;
+        }
+        for ($i = 0; $i < (max(count($user_path), count($manager_path))); $i++) {
+            if (isset($user_path[$i]) && !isset($manager_path[$i])) {
+                break;
             }
+            if ($user_path[$i] != $manager_path[$i]) {
+                return false;
+            }
+        }
+        if ($userRole->depth < $ManagerRole->depth) {
+            return true;
         }
         return false;
     }
