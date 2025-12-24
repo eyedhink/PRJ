@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use App\Utils\Controllers\BaseController;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class RoleController extends BaseController
@@ -30,6 +31,9 @@ class RoleController extends BaseController
                     'branch' => fn(Request $request, array $validated) => isset($validated['master_id']) ? Role::query()->find($validated['master_id'])->branch . "->" . $validated['title'] : $validated['title'],
                     'depth' => fn(Request $request, array $validated) => isset($validated['master_id']) ? Role::query()->find($validated['master_id'])->depth + 1 : 0,
                 ]
+            ],
+            selection_query_replace: [
+                'index' => fn(Request $request): Builder => Role::query(),
             ]
         );
     }

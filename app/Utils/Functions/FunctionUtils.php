@@ -105,4 +105,37 @@ class FunctionUtils
     {
         return ($admin->is_main_admin ?? false) || (isset($admin->abilities) && in_array($ability, $admin->abilities));
     }
+
+    /**
+     * @template TModel of Model
+     * @param class-string<TModel> $userRole
+     * @param class-string<TModel> $ManagerRole
+     * @return bool
+     */
+    // 1: Financial Manager->A
+    // 2: Financial Manager->B
+    // 3: Financial Manager->B->C
+    // 4: Financial Manager->A->F
+    // 5: Marketer->D->E
+    // Only (2) is Ranked Higher than (3)
+    public static function isHigherRanked(string $userRole, string $ManagerRole): bool
+    {
+        $user_path = explode("->", json_decode($userRole)->branch);
+        $manager_path = explode("->", json_decode($ManagerRole)->branch);
+        if (count($user_path) == count($manager_path)) {
+            return false;
+        }
+        for ($i = 0; $i < (max(count($user_path), count($manager_path))); $i++) {
+            if (isset($user_path[$i]) && !isset($manager_path[$i])) {
+                break;
+            }
+            if ($user_path[$i] != $manager_path[$i]) {
+                return false;
+            }
+        }
+        if (json_decode($userRole)->depth > json_decode($ManagerRole)->depth) {
+            return true;
+        }
+        return false;
+    }
 }

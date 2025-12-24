@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskControllerAdmin;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthorizeAbility;
+use Illuminate\Support\Facades\Route;
 
 Route::post("/user-login", [UserController::class, "login"]);
 
@@ -16,15 +17,15 @@ Route::post("/manager-login", [ManagerController::class, "login"]);
 
 Route::middleware('auth:user')->group(function () {
     Route::post("/message-create", [MessageController::class, "store"])
-        ->middleware(AuthorizeAbility::class . ':message-create');
+        ->middleware('ability:message-create');
     Route::get("/messages", [MessageController::class, "index"])
-        ->middleware(AuthorizeAbility::class . ':message-index');
+        ->middleware('ability:message-index');
     Route::get("/message/{kw}", [MessageController::class, "show"])
-        ->middleware(AuthorizeAbility::class . ':message-show');
+        ->middleware('ability:message-show');
     Route::put("/edit-message/{kw}", [MessageController::class, "edit"])
-        ->middleware(AuthorizeAbility::class . ':message-update');
+        ->middleware('ability:message-update');
     Route::delete("/delete-message/{kw}", [MessageController::class, "destroy"])
-        ->middleware(AuthorizeAbility::class . ':message-delete');
+        ->middleware('ability:message-delete');
 
     Route::post("/report-create", [ReportController::class, "store"]);
     Route::get("/reports", [ReportController::class, "index"]);
@@ -33,9 +34,9 @@ Route::middleware('auth:user')->group(function () {
     Route::delete("/delete-report/{kw}", [ReportController::class, "destroy"]);
 
     Route::get("/reports-admin", [ReportControllerAdmin::class, "index"])
-        ->middleware(AuthorizeAbility::class . ':report-index');
+        ->middleware('ability:report-index');
     Route::get("/report-admin/{kw}", [ReportControllerAdmin::class, "show"])
-        ->middleware(AuthorizeAbility::class . ':report-show');
+        ->middleware('ability:report-show');
 
     Route::post("/task-create", [TaskController::class, "store"]);
     Route::get("/tasks", [TaskController::class, "index"]);
@@ -44,15 +45,15 @@ Route::middleware('auth:user')->group(function () {
     Route::delete("/delete-task/{kw}", [TaskController::class, "destroy"]);
 
     Route::post("/task-create-admin", [TaskControllerAdmin::class, "store"])
-        ->middleware(AuthorizeAbility::class . ':task-create');
+        ->middleware('ability:task-create');
     Route::get("/tasks-admin", [TaskControllerAdmin::class, "index"])
-        ->middleware(AuthorizeAbility::class . ':task-index');
+        ->middleware('ability:task-index');
     Route::get("/task-admin/{kw}", [TaskControllerAdmin::class, "show"])
-        ->middleware(AuthorizeAbility::class . ':task-show');
+        ->middleware('ability:task-show');
     Route::put("/edit-task-admin/{kw}", [TaskControllerAdmin::class, "edit"])
-        ->middleware(AuthorizeAbility::class . ':task-update');
+        ->middleware('ability:task-update');
     Route::delete("/delete-task-admin/{kw}", [TaskControllerAdmin::class, "destroy"])
-        ->middleware(AuthorizeAbility::class . ':task-delete');
+        ->middleware('ability:task-delete');
 });
 
 Route::middleware("auth:manager")->group(function () {

@@ -34,6 +34,9 @@ class TaskController extends BaseController
                 ]
             ],
             selection_query: fn(Request $request): Builder => Task::with(['tasked', 'tasker'])->where('user_id', $request->user('user')->id)->orderByDesc('order'),
+            selection_query_replace: [
+                "index" => fn(Request $request): Builder => Task::query()->where('user_id', $request->user('user')->id)->orderByDesc('order'),
+            ]
         );
     }
 }

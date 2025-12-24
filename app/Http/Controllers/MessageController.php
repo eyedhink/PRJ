@@ -34,6 +34,11 @@ class MessageController extends BaseController
             selection_query: fn(Request $request): Builder => Message::with(['sender', 'receiver'])
                 ->where('sender_id', $request->user('user')->id)
                 ->orWhere('receiver_id', $request->user('user')->id),
+            selection_query_replace: [
+                'index' => fn(Request $request): Builder => Message::query()
+                    ->where('sender_id', $request->user('user')->id)
+                    ->orWhere('receiver_id', $request->user('user')->id),
+            ],
         );
     }
 }

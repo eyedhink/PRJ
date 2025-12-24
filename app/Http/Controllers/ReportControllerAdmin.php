@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ReportResource;
 use App\Models\Report;
 use App\Utils\Controllers\BaseController;
+use App\Utils\Functions\FunctionUtils;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use function Pest\Laravel\json;
@@ -35,7 +36,7 @@ class ReportControllerAdmin extends BaseController
                         $report = Report::query()->firstWhere($custom_kw, $kw);
                         $user_role = $report->user->role;
                         $manager_role = $manager->role;
-                        return $this->isHigherRanked($user_role, $manager_role);
+                        return FunctionUtils::isHigherRanked($user_role, $manager_role);
                     } else if ($method == "index") {
                         return true;
                     } else {
@@ -44,38 +45,5 @@ class ReportControllerAdmin extends BaseController
                 },
             ]
         );
-    }
-
-    /**
-     * @template TModel of Model
-     * @param class-string<TModel> $userRole
-     * @param class-string<TModel> $ManagerRole
-     * @return bool
-     */
-    // 1: Financial Manager->A
-    // 2: Financial Manager->B
-    // 3: Financial Manager->B->C
-    // 4: Financial Manager->A->F
-    // 5: Marketer->D->E
-    // Only (2) is Ranked Higher than (3)
-    public function isHigherRanked(string $userRole, string $ManagerRole): bool
-    {
-        $user_path = explode("->", json_decode($userRole)->branch);
-        $manager_path = explode("->", json_decode($ManagerRole)->branch);
-        if (count($user_path) == count($manager_path)) {
-            return false;
-        }
-        for ($i = 0; $i < (max(count($user_path), count($manager_path))); $i++) {
-            if (isset($user_path[$i]) && !isset($manager_path[$i])) {
-                break;
-            }
-            if ($user_path[$i] != $manager_path[$i]) {
-                return false;
-            }
-        }
-        if (json_decode($userRole)->depth > json_decode($ManagerRole)->depth) {
-            return true;
-        }
-        return false;
     }
 }

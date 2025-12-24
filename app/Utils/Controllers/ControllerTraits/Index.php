@@ -45,7 +45,13 @@ trait Index
                 }
             }
         }
-        $query = $this->selection_query != null && !in_array('index', $this->selection_query_blacklist) ? ($this->selection_query)($request) : (count($this->loadRelations) < 1 ? $this->model::query() : $this->model::with($this->loadRelations));
+        $query = $this->selection_query != null && !in_array('index', $this->selection_query_blacklist)
+            ? ($this->selection_query)($request) :
+            (
+            count($this->loadRelations) < 1 ?
+                $this->model::query() :
+                $this->model::with($this->loadRelations)
+            );
         foreach ($this->selection_query_replace as $key => $value) {
             if ($key == 'index') {
                 $query = $value($request, $validated);
