@@ -61,12 +61,12 @@ class User extends Model
     // Only (2) is Ranked Higher than (3)
     public function scopeHigherRankedThan($query, Role $managerRole)
     {
-        $expectedDepth = $managerRole->depth + 1;
+        $depth = $managerRole->depth + 1;
         $prefix = $managerRole->branch . '->%';
 
-        return $query->whereHas('role', function ($q) use ($expectedDepth, $prefix) {
+        return $query->whereHas('role', function ($q) use ($depth, $prefix) {
             $q->whereRaw('roles.branch LIKE ?', [$prefix])
-                ->where('roles.depth', $expectedDepth);
+                ->where('roles.depth', "<=", $depth);
         });
     }
 }
