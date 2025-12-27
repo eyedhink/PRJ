@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Http\Controllers\RoleController;
 use App\Models\Manager;
 use App\Models\Role;
 use App\Models\User;
