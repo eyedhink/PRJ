@@ -7,15 +7,8 @@
     <list default="true" id="24ab1d1d-38da-47c0-acfc-5a3d0af51792" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MessageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportControllerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportControllerAdmin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/RoleController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/RoleController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TaskController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TaskControllerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TaskControllerAdmin.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Controllers/ControllerTraits/Index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Utils/Functions/FunctionUtils.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Utils/Functions/FunctionUtils.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/app.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -696,7 +689,8 @@
       <workItem from="1766234252266" duration="9898000" />
       <workItem from="1766244386640" duration="5731000" />
       <workItem from="1766580148690" duration="714000" />
-      <workItem from="1766580938179" duration="8689000" />
+      <workItem from="1766580938179" duration="11877000" />
+      <workItem from="1766838762208" duration="2910000" />
     </task>
     <servers />
   </component>

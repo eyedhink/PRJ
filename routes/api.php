@@ -16,16 +16,16 @@ Route::post("/user-login", [UserController::class, "login"]);
 Route::post("/manager-login", [ManagerController::class, "login"]);
 
 Route::middleware('auth:user')->group(function () {
-    Route::post("/message-create", [MessageController::class, "store"])
-        ->middleware('ability:message-create');
-    Route::get("/messages", [MessageController::class, "index"])
-        ->middleware('ability:message-index');
-    Route::get("/message/{kw}", [MessageController::class, "show"])
-        ->middleware('ability:message-show');
-    Route::put("/edit-message/{kw}", [MessageController::class, "edit"])
-        ->middleware('ability:message-update');
-    Route::delete("/delete-message/{kw}", [MessageController::class, "destroy"])
-        ->middleware('ability:message-delete');
+    Route::post("/message-create", [MessageController::class, "store"])//        ->middleware('ability:message-create')
+    ;
+    Route::get("/messages", [MessageController::class, "index"])//        ->middleware('ability:message-index')
+    ;
+    Route::get("/message/{kw}", [MessageController::class, "show"])//        ->middleware('ability:message-show')
+    ;
+    Route::put("/edit-message/{kw}", [MessageController::class, "edit"])//        ->middleware('ability:message-update')
+    ;
+    Route::delete("/delete-message/{kw}", [MessageController::class, "destroy"])//        ->middleware('ability:message-delete')
+    ;
 
     Route::post("/report-create", [ReportController::class, "store"]);
     Route::get("/reports", [ReportController::class, "index"]);

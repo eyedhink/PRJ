@@ -6,9 +6,7 @@ use App\Http\Resources\ReportResource;
 use App\Models\Report;
 use App\Utils\Controllers\BaseController;
 use App\Utils\Functions\FunctionUtils;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use function Pest\Laravel\json;
 
 class ReportControllerAdmin extends BaseController
 {
