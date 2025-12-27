@@ -27,6 +27,7 @@ class CheckTaskExpiration extends Command
      */
     public function handle(): void
     {
+        echo "Checking task expiration...\n";
         $tasks = Task::query()->where('status', 'pending')->get();
         if ($tasks !== null) {
             foreach ($tasks as $task) {
@@ -36,5 +37,6 @@ class CheckTaskExpiration extends Command
                 }
             }
         }
+        echo "Finished checking task expiration...\n";
     }
 }
