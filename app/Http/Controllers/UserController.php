@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Utils\Exceptions\InvalidCredentialsException;
+use App\Utils\Functions\FunctionUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -55,5 +57,25 @@ class UserController
         ]);
         User::query()->create($validated);
         return response()->json(["message" => "User Created Successfully"]);
+    }
+
+    public function index(Request $request): JsonResponse
+    {
+        return FunctionUtils::automatedPaginationWithBuilder($request, User::query()->higherRankedThan($request->user('user')->role), UserResource::class);
+    }
+
+    public function show(Request $request, string $kw): JsonResponse
+    {
+        return response()->json(UserResource::make(User::with(['role', 'tasks', 'reports'])->higherRankedThan($request->user('user')->role)->findOrFail($kw)));
+    }
+
+    public function indexAdmin(Request $request): JsonResponse
+    {
+        return FunctionUtils::automatedPaginationWithBuilder($request, User::query(), UserResource::class);
+    }
+
+    public function showAdmin(Request $request, string $kw): JsonResponse
+    {
+        return response()->json(UserResource::make(User::with(['role', 'tasks', 'reports'])->findOrFail($kw)));
     }
 }

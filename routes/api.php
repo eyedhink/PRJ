@@ -54,11 +54,16 @@ Route::middleware('auth:user')->group(function () {
         ->middleware('ability:task-update');
     Route::delete("/delete-task-admin/{kw}", [TaskControllerAdmin::class, "destroy"])
         ->middleware('ability:task-delete');
+
+    Route::get("/slaves", [UserController::class, "index"]);
+    Route::get("/slave/{kw}", [UserController::class, "show"]);
 });
 
 Route::middleware("auth:manager")->group(function () {
     Route::post("/user-apply-role/{id}", [UserController::class, "apply_role"]);
     Route::post("/user-create", [UserController::class, "store"]);
+    Route::get("/users", [UserController::class, "indexAdmin"]);
+    Route::get("/user/{kw}", [UserController::class, "showAdmin"]);
 
     Route::post("/role-create", [RoleController::class, "store"]);
     Route::get("/roles", [RoleController::class, "index"]);
