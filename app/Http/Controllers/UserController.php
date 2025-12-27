@@ -2,16 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use AllowDynamicProperties;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Utils\Controllers\ControllerTraits\Index;
+use App\Utils\Controllers\ControllerTraits\Properties;
+use App\Utils\Controllers\ControllerTraits\Show;
+use App\Utils\Controllers\ControllerTraits\Store;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Functions\FunctionUtils;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+#[AllowDynamicProperties]
 class UserController
 {
+    use Properties, Store, Index, Show;
+
+    public function __construct()
+    {
+        $this->model = User::class;
+        $this->resource = UserResource::class;
+        $this->loadRelations = ['role', 'tasks', 'reports'];
+        $this->validation = [
+            "name" => ['required', 'string', 'unique:users'],
+            "password" => ['required', 'string'],
+            "role_id" => ['required', 'integer', 'exists:roles,id'],
+        ];
+        $validation_create = array_map(function ($value) {
+            return $value;
+        }, $this->validation);
+        $this->validation_create = $validation_create;
+        $this->selection_query = fn(Request $request): Builder => User::with(['role', 'tasks', 'reports'])->higherRankedThan($request->user('user')->role);
+        $this->selection_query_replace = [
+            "index" => fn(Request $request): Builder => User::with(['role'])->higherRankedThan($request->user('user')->role),
+        ];
+        $this->selection_query_with_trashed = null;
+    }
+
     /**
      * @throws CustomException
      */
@@ -48,33 +78,12 @@ class UserController
         return response()->json(["message" => "Role Applied Successfully"]);
     }
 
-    public function store(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            "name" => ['required', 'string', 'unique:users'],
-            "password" => ['required', 'string'],
-            "role_id" => ['required', 'integer', 'exists:roles,id'],
-        ]);
-        User::query()->create($validated);
-        return response()->json(["message" => "User Created Successfully"]);
-    }
-
-    public function index(Request $request): JsonResponse
-    {
-        return FunctionUtils::automatedPaginationWithBuilder($request, User::query()->higherRankedThan($request->user('user')->role), UserResource::class);
-    }
-
-    public function show(Request $request, string $kw): JsonResponse
-    {
-        return response()->json(UserResource::make(User::with(['role', 'tasks', 'reports'])->higherRankedThan($request->user('user')->role)->findOrFail($kw)));
-    }
-
     public function indexAdmin(Request $request): JsonResponse
     {
         return FunctionUtils::automatedPaginationWithBuilder($request, User::query(), UserResource::class);
     }
 
-    public function showAdmin(Request $request, string $kw): JsonResponse
+    public function showAdmin(string $kw): JsonResponse
     {
         return response()->json(UserResource::make(User::with(['role', 'tasks', 'reports'])->findOrFail($kw)));
     }

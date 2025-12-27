@@ -2,23 +2,26 @@
 
 namespace App\Utils\Controllers\ControllerTraits;
 
+use App\Utils\Resources\BaseResource;
+use Illuminate\Database\Eloquent\Model;
+
 trait Properties
 {
-    private string $model;
-    private string $resource;
-    private array $loadRelations;
-    private bool $ability_system;
-    private string $ability_guard;
-    private string $ability_prefix;
-    private array $ability_system_blacklist;
-    private array $validation;
-    private array $validation_create;
-    private array $validation_index;
-    private array $validation_update;
-    private array $validation_extensions;
-    private array $custom_kws;
-    private array $selection_query_blacklist;
-    private array $selection_query_replace;
-    private array $match_ids;
-    private array $access_checks;
+    public string $model = Model::class;
+    public string $resource = BaseResource::class;
+    public array $loadRelations = [];
+    public bool $ability_system = false;
+    public string $ability_guard = "admin";
+    public string $ability_prefix = "";
+    public array $ability_system_blacklist = [];
+    public array $validation = [];
+    public array $validation_create = [];
+    public array $validation_index = [];
+    public array $validation_update = [];
+    public array $validation_extensions = [];
+    public array $custom_kws = [];
+    public array $selection_query_blacklist = [];
+    public array $selection_query_replace = [];
+    public array $match_ids = [];
+    public array $access_checks = [];
 }
