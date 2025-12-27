@@ -2,7 +2,7 @@
 
 namespace App\Utils\Controllers\ControllerTraits;
 
-use App\Utils\Exceptions\AccessDeniedException;
+use App\Utils\Exceptions\CustomException;
 use App\Utils\Functions\FunctionUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
 trait Edit
 {
     /**
-     * @throws AccessDeniedException
+     * @throws CustomException
      */
     public
     function edit($kw, Request $request): JsonResponse
     {
         if ($this->ability_system && (!isset($this->ability_system_blacklist) || !array_search('store', $this->ability_system_blacklist)) && !FunctionUtils::isAuthorized($request->user($this->ability_guard), $this->ability_prefix . "-edit")) {
-            throw new AccessDeniedException();
+            throw new CustomException("Access Denied");
         }
         $validated = $request->validate($this->validation_update);
         $custom_extensions = array_search("edit", array_keys($this->validation_extensions));
@@ -33,7 +33,7 @@ trait Edit
             foreach ($this->access_checks as $name => $check) {
                 $result = $check($request, $validated, 'edit:' . $kw . ":" . "id");
                 if (!$result) {
-                    throw new AccessDeniedException();
+                    throw new CustomException("Access Denied");
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace App\Utils\Traits;
 
-use App\Utils\Exceptions\AccessDeniedException;
+use App\Utils\Exceptions\CustomException;
 use DateTimeInterface;
 use GeoSot\EnvEditor\EnvEditor;
 use GeoSot\EnvEditor\Exceptions\EnvException;
@@ -21,7 +21,7 @@ trait CustomHasApiTokens
 
     /**
      * @throws EnvException
-     * @throws AccessDeniedException
+     * @throws CustomException
      */
     public function createToken(string $name, Request $request, array $abilities = ['*'], ?DateTimeInterface $expiresAt = null): NewAccessToken
     {
@@ -42,6 +42,6 @@ trait CustomHasApiTokens
                 }
             }
         }
-        throw new AccessDeniedException();
+        throw new CustomException("Access Denied");
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Utils\Controllers\ControllerTraits;
 
-use App\Utils\Exceptions\AccessDeniedException;
+use App\Utils\Exceptions\CustomException;
 use App\Utils\Functions\FunctionUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,20 +10,20 @@ use Illuminate\Http\Request;
 trait Show
 {
     /**
-     * @throws AccessDeniedException
+     * @throws CustomException
      */
     public
     function show($kw, Request $request): JsonResponse
     {
         if ($this->ability_system && (!isset($this->ability_system_blacklist) || !array_search('store', $this->ability_system_blacklist)) && !FunctionUtils::isAuthorized($request->user($this->ability_guard), $this->ability_prefix . "-show")) {
-            throw new AccessDeniedException();
+            throw new CustomException("Access Denied");
         }
         $custom_kw = array_search("show", array_keys($this->custom_kws));
         if ($this->access_checks) {
             foreach ($this->access_checks as $name => $check) {
                 $result = $check($request, [], 'show:' . $kw . ":" . "id");
                 if (!$result) {
-                    throw new AccessDeniedException();
+                    throw new CustomException("Access Denied");
                 }
             }
         }

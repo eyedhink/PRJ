@@ -2,8 +2,8 @@
 
 namespace App\Utils\Controllers\ControllerTraits;
 
-use App\Utils\Exceptions\AccessDeniedException;
-use App\Utils\Exceptions\ImpossibleRequestException;
+
+use App\Utils\Exceptions\CustomException;
 use App\Utils\Functions\FunctionUtils;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\JsonResponse;
@@ -12,23 +12,23 @@ use Illuminate\Http\Request;
 trait Restore
 {
     /**
-     * @throws AccessDeniedException|ImpossibleRequestException
+     * @throws CustomException
      */
     public
     function restore($kw, Request $request): JsonResponse
     {
         if ($this->ability_system && (!isset($this->ability_system_blacklist) || !array_search('restore', $this->ability_system_blacklist)) && !FunctionUtils::isAuthorized($request->user($this->ability_guard), $this->ability_prefix . "-restore")) {
-            throw new AccessDeniedException();
+            throw new CustomException("Access Denied");
         }
         if (!in_array(SoftDeletes::class, class_uses_recursive($this->model))) {
-            throw new ImpossibleRequestException();
+            throw new CustomException("Impossible Request");
         }
         $custom_kw = array_search("restore", array_keys($this->custom_kws));
         if ($this->access_checks) {
             foreach ($this->access_checks as $name => $check) {
                 $result = $check($request, [], 'restore:' . $kw . ":" . "id");
                 if (!$result) {
-                    throw new AccessDeniedException();
+                    throw new CustomException("Access Denied");
                 }
             }
         }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Manager;
-use App\Utils\Exceptions\InvalidCredentialsException;
+use App\Utils\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class ManagerController
 {
     /**
-     * @throws InvalidCredentialsException
+     * @throws CustomException
      */
     public function login(Request $request): JsonResponse
     {
@@ -23,11 +23,11 @@ class ManagerController
         $manager = Manager::query()->firstWhere('name', $validated['name']);
 
         if (!$manager) {
-            throw new InvalidCredentialsException();
+            throw new CustomException("Invalid Credentials");
         }
 
         if (!Hash::check($validated['password'], $manager->password)) {
-            throw new InvalidCredentialsException();
+            throw new CustomException("Invalid Credentials");
         }
 
         return response()->json([

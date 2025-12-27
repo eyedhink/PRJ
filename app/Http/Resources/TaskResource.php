@@ -4,8 +4,6 @@ namespace App\Http\Resources;
 
 use App\Utils\Resources\BaseResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-
 class TaskResource extends BaseResource
 {
     /**

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ReportResource;
 use App\Models\Report;
 use App\Utils\Controllers\BaseController;
-use App\Utils\Exceptions\TooLate;
+use App\Utils\Exceptions\CustomException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -34,7 +34,7 @@ class ReportController extends BaseController
                         $exploded = explode(":", $method);
                         $report = Report::query()->findOrFail($exploded[1]);
                         if (time() - Carbon::parse($report->created_at)->timestamp > 86400) {
-                            throw new TooLate();
+                            throw new CustomException("Too Late");
                         }
                         return true;
                     }

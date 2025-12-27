@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Utils\Exceptions\InvalidCredentialsException;
+use App\Utils\Exceptions\CustomException;
 use App\Utils\Functions\FunctionUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController
 {
     /**
-     * @throws InvalidCredentialsException
+     * @throws CustomException
      */
     public function login(Request $request): JsonResponse
     {
@@ -25,11 +25,11 @@ class UserController
         $user = User::query()->firstWhere('name', $validated['name']);
 
         if (!$user) {
-            throw new InvalidCredentialsException();
+            throw new CustomException("Invalid Credentials");
         }
 
         if (!Hash::check($validated['password'], $user->password)) {
-            throw new InvalidCredentialsException();
+            throw new CustomException("Invalid Credentials");
         }
 
         return response()->json([

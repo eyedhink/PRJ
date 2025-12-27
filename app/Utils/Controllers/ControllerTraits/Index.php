@@ -2,7 +2,7 @@
 
 namespace App\Utils\Controllers\ControllerTraits;
 
-use App\Utils\Exceptions\AccessDeniedException;
+use App\Utils\Exceptions\CustomException;
 use App\Utils\Functions\FunctionUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,13 +12,13 @@ trait Index
     use MatchIds;
 
     /**
-     * @throws AccessDeniedException
+     * @throws CustomException
      */
     public
     function index(Request $request): JsonResponse
     {
         if ($this->ability_system && (!isset($this->ability_system_blacklist) || !array_search('store', $this->ability_system_blacklist)) && !FunctionUtils::isAuthorized($request->user($this->ability_guard), $this->ability_prefix . "-index")) {
-            throw new AccessDeniedException();
+            throw new CustomException("Access Denied");
         }
         $validated = $request->validate($this->validation_index);
         $custom_extensions = array_search("index", array_keys($this->validation_extensions));
@@ -34,14 +34,14 @@ trait Index
             foreach ($this->access_checks as $name => $check) {
                 $result = $check($request, $validated, 'index');
                 if (!$result) {
-                    throw new AccessDeniedException();
+                    throw new CustomException("Access Denied");
                 }
             }
         }
         foreach ($this->match_ids as $key => $value) {
             if ($key == 'index') {
                 if (!$this->matchIds($validated, $value)) {
-                    throw new AccessDeniedException();
+                    throw new CustomException("Access Denied");
                 }
             }
         }
