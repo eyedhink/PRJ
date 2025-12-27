@@ -39,6 +39,15 @@ class ReportController extends BaseController
                         return true;
                     }
                     return true;
+                },
+                "has_reported_today" => function (Request $request, array $validated, string $method) {
+                    if ($method == "store") {
+                        $reports = Report::query()->whereBetween('created_at', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()])->get();
+                        if (!$reports->isEmpty()) {
+                            return false;
+                        }
+                    }
+                    return true;
                 }
             ]
         );
