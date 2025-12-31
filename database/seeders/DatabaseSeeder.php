@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1,
         ]);
         User::query()->create([
-            'name' => 'user',
+            'name' => 'weakling',
             'password' => 'password',
             'role_id' => 2,
         ]);

@@ -32,8 +32,8 @@ class ReportController extends BaseController
                 'is_too_late' => function (Request $request, array $validated, string $method) {
                     if (str_starts_with($method, "edit")) {
                         $exploded = explode(":", $method);
-                        $report = Report::query()->findOrFail($exploded[1]);
-                        if (time() - Carbon::parse($report->created_at)->timestamp > 86400) {
+                        $report = Report::query()->findOrFail($exploded[1]);;
+                        if (Carbon::parse($report->created_at)->timestamp - time() > 86400) {
                             throw new CustomException("Too Late");
                         }
                         return true;
@@ -42,7 +42,7 @@ class ReportController extends BaseController
                 },
                 "has_reported_today" => function (Request $request, array $validated, string $method) {
                     if ($method == "store") {
-                        $reports = Report::query()->whereBetween('created_at', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()])->get();
+                        $reports = Report::query()->where("user_id", $request->user('user')->id)->whereBetween('created_at', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()])->get();
                         if (!$reports->isEmpty()) {
                             return false;
                         }

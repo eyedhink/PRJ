@@ -78,7 +78,7 @@ class UserController
 
     public function indexAdmin(Request $request): JsonResponse
     {
-        return FunctionUtils::automatedPaginationWithBuilder($request, User::query(), UserResource::class);
+        return FunctionUtils::automatedPaginationWithBuilder($request, User::with(['role']), UserResource::class);
     }
 
     public function showAdmin(string $kw): JsonResponse
