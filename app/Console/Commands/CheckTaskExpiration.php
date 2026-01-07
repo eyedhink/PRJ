@@ -31,11 +31,11 @@ class CheckTaskExpiration extends Command
         $tasks = Task::query()->where('status', 'pending')->get();
         if ($tasks !== null) {
             foreach ($tasks as $task) {
-                if (time() <= Carbon::parse($task->expires_at)->timestamp) {
+                if (time() >= Carbon::parse($task->expires_at)->timestamp) {
                     $task->status = 'failed';
                     $task->save();
-                    var_dump("Failed Task Found!");
                 }
+                var_dump(Carbon::parse($task->expires_at)->timestamp, time());
             }
         }
         echo "Finished checking task expiration...\n";

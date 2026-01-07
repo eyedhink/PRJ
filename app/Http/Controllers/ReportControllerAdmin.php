@@ -41,6 +41,17 @@ class ReportControllerAdmin extends BaseController
                         return false;
                     }
                 },
+                "is_failed" => function (Request $request, array $validated, string $method) {
+                    if (str_starts_with($method, "edit") || str_starts_with($method, "show")
+                        || str_starts_with($method, "destroy") || str_starts_with($method, "restore") || str_starts_with($method, "delete")) {
+                        $exploded = explode(":", $method);
+                        $report = Report::query()->findOrFail($exploded[1]);
+                        if ($report->status == "failed") {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
             ]
         );
     }

@@ -15,7 +15,7 @@ class RoleController extends BaseController
         parent::__construct(
             model: Role::class,
             resource: RoleResource::class,
-            loadRelations: ['master', 'slaves'],
+            loadRelations: ['master', 'slaves', 'users'],
             validation: [
                 'abilities' => ['required', 'array'],
                 'abilities.*' => ['required_with:abilities', 'string', 'max:255'],

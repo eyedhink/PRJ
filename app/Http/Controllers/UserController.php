@@ -35,8 +35,8 @@ class UserController
             return $value;
         }, $this->validation);
         $this->validation_create = $validation_create;
-        $this->selection_query = fn(Request $request): Builder => User::with(['role', 'tasks', 'reports'])->higherRankedThan($request->user('user')->role);
-        $this->selection_query_replace = ["index" => fn(Request $request): Builder => User::with(['role'])->higherRankedThan($request->user('user')->role),];
+        $this->selection_query = fn(Request $request): Builder => User::with(['role.slaves.users', 'tasks', 'reports'])->higherRankedThan($request->user('user')->role);
+        $this->selection_query_replace = ["index" => fn(Request $request): Builder => User::with(['role.slaves.users'])->higherRankedThan($request->user('user')->role),];
         $this->selection_query_with_trashed = null;
     }
 

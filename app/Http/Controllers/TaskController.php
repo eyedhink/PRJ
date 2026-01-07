@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TaskResource;
+use App\Models\Report;
 use App\Models\Task;
 use App\Utils\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,6 +37,20 @@ class TaskController extends BaseController
             selection_query: fn(Request $request): Builder => Task::with(['tasked', 'tasker'])->where('user_id', $request->user('user')->id)->orderByDesc('order'),
             selection_query_replace: [
                 "index" => fn(Request $request): Builder => Task::query()->where('user_id', $request->user('user')->id)->orderByDesc('order'),
+            ],
+            access_checks: [
+                "is_failed" => function (Request $request, array $validated, string $method) {
+                    if (str_starts_with($method, "edit") || str_starts_with($method, "show")
+                        || str_starts_with($method, "destroy") || str_starts_with($method, "restore") || str_starts_with($method, "delete")) {
+                        $exploded = explode(":", $method);
+                        $report = Task::query()->findOrFail($exploded[1]);
+                        if ($report->status == "failed") {
+                            var_dump($report->status);
+                            return false;
+                        }
+                    }
+                    return true;
+                }
             ]
         );
     }

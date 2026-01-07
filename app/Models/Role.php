@@ -31,4 +31,9 @@ class Role extends Model
     {
         return $this->hasMany(Role::class, 'master_id');
     }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }
